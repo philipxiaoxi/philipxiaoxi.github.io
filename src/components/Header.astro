@@ -40,8 +40,10 @@ import HeaderLink from './HeaderLink.astro';
 		top: 0;
 		z-index: 50;
 		margin: 0;
-		padding: 0 1.25rem;
-		height: var(--header-height);
+		padding: env(safe-area-inset-top) max(1.25rem, env(safe-area-inset-right)) 0
+			max(1.25rem, env(safe-area-inset-left));
+		min-height: calc(var(--header-height) + env(safe-area-inset-top));
+		height: auto;
 		display: flex;
 		align-items: center;
 		background: rgba(255, 252, 248, 0.82);
@@ -79,6 +81,10 @@ import HeaderLink from './HeaderLink.astro';
 	}
 
 	.internal-links :global(a) {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 2.5rem;
 		padding: 0.45rem 0.75rem;
 		color: rgb(var(--ink-muted));
 		text-decoration: none;
@@ -130,7 +136,8 @@ import HeaderLink from './HeaderLink.astro';
 
 	@media (max-width: 640px) {
 		header {
-			padding: 0 0.75rem;
+			padding: env(safe-area-inset-top) max(0.75rem, env(safe-area-inset-right)) 0
+				max(0.75rem, env(safe-area-inset-left));
 		}
 
 		.social-links {
@@ -138,7 +145,8 @@ import HeaderLink from './HeaderLink.astro';
 		}
 
 		.internal-links :global(a) {
-			padding: 0.4rem 0.55rem;
+			min-height: 2.75rem;
+			padding: 0.5rem 0.7rem;
 			font-size: 0.9rem;
 		}
 	}

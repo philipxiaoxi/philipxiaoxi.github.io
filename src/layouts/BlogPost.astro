@@ -53,7 +53,8 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 
 <style>
 	.hero-image {
-		width: min(var(--wide-width), calc(100% - 2rem));
+		/* main 已约束版心与左右边距，此处铺满即可，避免二次收窄 */
+		width: 100%;
 		margin: 0 auto 1.5rem;
 	}
 
@@ -67,8 +68,8 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 	}
 
 	.prose {
-		width: var(--content-width);
-		max-width: calc(100% - 2rem);
+		width: 100%;
+		max-width: 100%;
 		margin: 0 auto;
 		color: rgb(var(--gray-dark));
 		/* 宽表格可横向滑动 */
