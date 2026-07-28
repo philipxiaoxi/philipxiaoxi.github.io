@@ -3,12 +3,13 @@ title: '进入 Docker 的魔法世界：最简单的直播服务器配置'
 description: '在香橙派上安装 Docker，用 nginx-rtmp 镜像搭建 RTMP 直播服务，并说明如何修改、提交与导出镜像。'
 pubDate: 'Jun 12 2021'
 updatedDate: 'Jul 10 2021'
+heroImage: './assets/docker-rtmp-live-server/01.png'
 ---
 
 ## 前言
 前几天受老师影响，打算去瞧瞧这个docker到底怎么样，我心想虚拟机性能应该不咋地，但是百度上说很强。于是我破天荒的在香橙派安装了docker，从而开启了我的docker的魔法世界。这个香橙派就是图下的东东，没想到他也能运行docker！！！
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/img_convert/60fc0df4747036279e0ba5953f6659f5.png#pic_center)
+![截图 1](./assets/docker-rtmp-live-server/01.png)
 
 Docker 是一个开源的应用容器引擎，可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口，容器性能开销极低。这对树莓派非常有用，本教程将介绍 Docker 这个工具以及如何在 Raspbian 上安装 Docker。
 
@@ -57,21 +58,21 @@ sudo systemctl start docker
 
 ## 第一个docker镜像-nginx-rtmp
 由于树莓派，香橙派这些是armv7处理器，大部分百度找到的nginx-rtmp镜像都是只支持x86 x64平台，所以我们需要去docker hub看看有没有自己能用的配好的镜像，不然得完全自己配置（悲）。
-![支持的平台](https://img-blog.csdnimg.cn/20201225100128647.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzM1Mzg5Ng==,size_16,color_FFFFFF,t_70)
+![支持的平台](./assets/docker-rtmp-live-server/02.png)
 好在找到了 适合armv7 的  [vallahaye/nginx-rtmp](https://hub.docker.com/r/vallahaye/nginx-rtmp) 镜像。，可以看到支持arm平台。当然我们可以自己直接做镜像也是没问题的。然后把镜像下载到香橙派中。
 
 ```bash
 docker pull vallahaye/nginx-rtmp
 ```
 执行docker images 可以看到镜像已经下载到本机了。
-![镜像](https://img-blog.csdnimg.cn/20201225100400665.png)
+![镜像](./assets/docker-rtmp-live-server/03.png)
 通过docker run 可以开启这个镜像，-p就是物理机的端口映射到容器里对应端口，--name就是启动的容器名字，可以自定义，-d就是后台运行的意思，后面就是运行的镜像名称。
 
 ```bash
 docker run -p 1935:1935 -p 8080:80  --name rtmp -d vallahaye/nginx-rtmp
 ```
 如果你运行成功了，执行docker ps 可以看到容器在跑，就已经搭好了 直播服务器啦！为什么呢？因为这个镜像是别人做好的直播服务器镜像。
-![运行查询](https://img-blog.csdnimg.cn/20201225100736185.png)
+![运行查询](./assets/docker-rtmp-live-server/04.png)
 镜像的使用方法这里就不再赘述，在镜像作者的github上已经有详细的readme.md文档介绍。[vallahaye/nginx-rtmp](https://github.com/vallahaye/docker-nginx-rtmp/tree/master)
 ## 修改他人的镜像
 在使用这个镜像中，发现只能支持rtmp推流和播放，不支持hls，stat查询推流信息等功能。所以我们需要对镜像进行修改。那么我们怎么进入容器里面的shell呢。执行下面的命令可以进入到容器的bash。（部分镜像没有bash）
@@ -155,7 +156,7 @@ server
 docker commit -m="提交信息" -a="作者" 运行的容器id 要保存的容器名称
 ```
 执行了上面的代码，我们执行 docker images 可以看到我们commit 好的镜像。
-![镜像列表](https://img-blog.csdnimg.cn/20201225101816233.png)
+![镜像列表](./assets/docker-rtmp-live-server/05.png)
 ## 运行自己的镜像
 在运行自己的镜像之前，需要把先前的容器停止，移除，从而对应的监听端口释放。容器名称换成自己commit的。
 ```bash
