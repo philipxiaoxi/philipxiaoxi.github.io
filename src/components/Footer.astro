@@ -1,22 +1,22 @@
 ---
 import { SITE_AUTHOR, SITE_TAGLINE, SOCIAL_LINKS } from '../consts';
 
-const today = new Date();
+const year = new Date().getFullYear();
 ---
 
 <footer>
 	<div class="footer-inner">
 		<p class="motto">{SITE_TAGLINE}</p>
 		<div class="meta">
-			<span>&copy; {today.getFullYear()} {SITE_AUTHOR}</span>
+			<span>&copy; {year} {SITE_AUTHOR}</span>
 			<span class="dot" aria-hidden="true">·</span>
 			<div class="social-links">
 				{
 					SOCIAL_LINKS.map((link) => (
 						<a
 							href={link.href}
-							target={link.icon === 'email' ? undefined : '_blank'}
-							rel={link.icon === 'email' ? undefined : 'noopener noreferrer'}
+							target={link.external ? '_blank' : undefined}
+							rel={link.external ? 'noopener noreferrer' : undefined}
 						>
 							{link.label}
 						</a>

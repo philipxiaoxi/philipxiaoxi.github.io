@@ -13,16 +13,11 @@
 	--paper: #f7f4ef;
 	--paper-elevated: #fffcf8;
 	--line: 220, 214, 204;
-	--black: 22, 24, 28;
-	--gray: 90, 96, 108;
-	--gray-light: 232, 227, 218;
 	--gray-dark: 40, 44, 52;
 	--radius: 14px;
 	--radius-sm: 10px;
 	--shadow-sm: 0 1px 2px rgba(22, 24, 28, 0.04), 0 4px 12px rgba(22, 24, 28, 0.04);
 	--shadow-md: 0 4px 24px rgba(22, 24, 28, 0.06), 0 1px 3px rgba(22, 24, 28, 0.04);
-	--shadow-lg: 0 12px 40px rgba(22, 24, 28, 0.08), 0 2px 8px rgba(22, 24, 28, 0.04);
-	--box-shadow: var(--shadow-md);
 	--content-width: 42rem;
 	--wide-width: 56rem;
 	--header-height: 4rem;
@@ -138,10 +133,6 @@ p {
 	margin: 0 0 1em;
 }
 
-.prose p {
-	margin-bottom: 1.35em;
-}
-
 textarea,
 input {
 	font-size: 16px;
@@ -153,9 +144,33 @@ table {
 	border-collapse: collapse;
 }
 
-/* Markdown / 文章正文表格 */
+/* 文章正文（Markdown / MDX slot 内容） */
+.prose {
+	width: 100%;
+	max-width: 100%;
+	margin: 0 auto;
+	color: rgb(var(--gray-dark));
+	overflow-wrap: anywhere;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.prose p {
+	margin-bottom: 1.35em;
+}
+
+.prose h2,
+.prose h3 {
+	margin-top: 1.75em;
+}
+
+.prose a {
+	font-weight: 600;
+}
+
 .prose table {
 	width: 100%;
+	max-width: 100%;
 	margin: 1.25em 0 1.75em;
 	border-collapse: separate;
 	border-spacing: 0;
@@ -193,16 +208,6 @@ table {
 .prose tbody tr:hover td,
 .prose tbody tr:hover th {
 	background: rgba(243, 224, 212, 0.28);
-}
-
-/* 宽表可横向滚动，避免撑破版心 */
-.prose {
-	overflow-wrap: anywhere;
-}
-
-.prose table {
-	/* 让父级可出现横向滚动条时表格仍可读 */
-	max-width: 100%;
 }
 
 img {
@@ -244,22 +249,9 @@ hr {
 	margin: 2em 0;
 }
 
-/* 通用区块 */
+/* 通用区块（博客列表页等） */
 .section {
 	margin-bottom: 2.75rem;
-}
-
-.section-label {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	margin: 0 0 1rem;
-	font-size: 1.35rem;
-}
-
-.section-label .emoji {
-	font-size: 1.15em;
-	line-height: 1;
 }
 
 .lead {
@@ -268,171 +260,6 @@ hr {
 	border-left: 3px solid var(--accent);
 	padding-left: 1rem;
 	margin: 0 0 2rem;
-}
-
-/* 卡片 */
-.card {
-	background: var(--paper-elevated);
-	border: 1px solid rgba(var(--line), 0.85);
-	border-radius: var(--radius);
-	box-shadow: var(--shadow-sm);
-	padding: 1.35rem 1.4rem;
-}
-
-.card-list {
-	display: flex;
-	flex-direction: column;
-	gap: 0.85rem;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-.post-card {
-	display: block;
-	padding: 1.15rem 1.25rem;
-	background: var(--paper-elevated);
-	border: 1px solid rgba(var(--line), 0.85);
-	border-radius: var(--radius);
-	box-shadow: var(--shadow-sm);
-	text-decoration: none;
-	color: inherit;
-	transition:
-		transform 0.18s ease,
-		box-shadow 0.18s ease,
-		border-color 0.18s ease;
-}
-
-.post-card:hover {
-	transform: translateY(-2px);
-	box-shadow: var(--shadow-md);
-	border-color: rgba(196, 92, 38, 0.35);
-	color: inherit;
-}
-
-.post-card .post-title {
-	margin: 0 0 0.35rem;
-	font-size: 1.15rem;
-	color: rgb(var(--ink));
-}
-
-.post-card:hover .post-title {
-	color: var(--accent-dark);
-}
-
-.post-card .post-meta {
-	margin: 0;
-	font-size: 0.88rem;
-	color: rgb(var(--ink-muted));
-}
-
-.post-card .post-desc {
-	margin: 0.45rem 0 0;
-	font-size: 0.95rem;
-	color: rgb(var(--gray-dark));
-	line-height: 1.55;
-}
-
-/* 技术方向表 */
-.focus-table {
-	width: 100%;
-	border-collapse: separate;
-	border-spacing: 0;
-	overflow: hidden;
-	border-radius: var(--radius);
-	border: 1px solid rgba(var(--line), 0.9);
-	background: var(--paper-elevated);
-	box-shadow: var(--shadow-sm);
-	font-size: 0.95rem;
-}
-
-.focus-table th,
-.focus-table td {
-	padding: 0.9rem 1.1rem;
-	text-align: left;
-	vertical-align: top;
-	border-bottom: 1px solid rgba(var(--line), 0.75);
-}
-
-.focus-table th {
-	background: rgba(var(--line), 0.35);
-	font-weight: 700;
-	font-size: 0.85rem;
-	letter-spacing: 0.04em;
-	color: rgb(var(--ink-muted));
-}
-
-.focus-table tr:last-child td {
-	border-bottom: none;
-}
-
-.focus-table .area {
-	white-space: nowrap;
-	font-weight: 600;
-	width: 38%;
-}
-
-.focus-table .area .emoji {
-	margin-right: 0.35rem;
-}
-
-.focus-table tbody tr {
-	transition: background 0.15s ease;
-}
-
-.focus-table tbody tr:hover {
-	background: rgba(243, 224, 212, 0.35);
-}
-
-/* 联系列表 */
-.contact-list {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-.contact-list li {
-	margin: 0.45rem 0;
-	padding-left: 0.15rem;
-}
-
-.contact-list a {
-	font-weight: 600;
-}
-
-/* 页脚标语 */
-.site-motto {
-	margin: 1.5rem 0 0;
-	padding: 0.85rem 1rem;
-	border-left: 3px solid var(--accent);
-	color: rgb(var(--ink-muted));
-	font-size: 0.95rem;
-	background: rgba(255, 252, 248, 0.6);
-	border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-}
-
-/* 链接按钮 */
-.link-more {
-	display: inline-flex;
-	align-items: center;
-	gap: 0.35rem;
-	margin-top: 1.15rem;
-	font-weight: 600;
-	text-decoration: none;
-	color: var(--accent-dark);
-}
-
-.link-more:hover {
-	color: var(--accent);
-}
-
-.link-more::after {
-	content: '→';
-	transition: transform 0.15s ease;
-}
-
-.link-more:hover::after {
-	transform: translateX(3px);
 }
 
 @media (max-width: 720px) {
@@ -445,17 +272,6 @@ hr {
 	main {
 		padding: 1.5rem max(0.85rem, env(safe-area-inset-right)) 3rem
 			max(0.85rem, env(safe-area-inset-left));
-	}
-
-	.focus-table .area {
-		white-space: normal;
-		width: auto;
-	}
-
-	.focus-table th,
-	.focus-table td {
-		padding: 0.75rem 0.8rem;
-		font-size: 0.9rem;
 	}
 }
 

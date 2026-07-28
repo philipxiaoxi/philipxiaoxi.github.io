@@ -1,5 +1,4 @@
-// Place any global data in this file.
-// You can import this data from anywhere in your site by using the `import` keyword.
+/** 站点级常量：标题、导航、社交与首页简介 */
 
 export const SITE_TITLE = '杰西的自习室';
 export const SITE_DESCRIPTION = '杰西的技术笔记：前端、工程化与一点 AI 实践';
@@ -15,17 +14,21 @@ export const NAV_LINKS = [
 	{ href: '/blog', label: '博客' },
 ] as const;
 
+export type SocialIconName = 'github' | 'email';
+
 /** 社交链接 */
 export const SOCIAL_LINKS = [
 	{
 		href: SITE_GITHUB,
 		label: 'GitHub',
-		icon: 'github' as const,
+		icon: 'github' as const satisfies SocialIconName,
+		external: true,
 	},
 	{
 		href: `mailto:${SITE_EMAIL}`,
 		label: '邮箱',
-		icon: 'email' as const,
+		icon: 'email' as const satisfies SocialIconName,
+		external: false,
 	},
 ] as const;
 
@@ -34,8 +37,6 @@ export const SOCIAL_LINKS = [
  */
 export const PROFILE = {
 	name: '杰西',
-	role: '前端工程师',
-	location: '广州',
 	headline: '做前端，也写一点全栈与 AI。',
 	paragraphs: [
 		'我是杰西。从 Vue 与工程化一路做下来，习惯把复杂业务收成可维护的结构，也愿意在性能与交付质量上多花一点心思。',

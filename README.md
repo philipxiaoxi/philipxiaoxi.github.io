@@ -57,11 +57,11 @@ npm run build && npm run preview
 
 ```text
 src/
-  components/     # 页头、页脚、SEO head 等
+  components/     # BaseHead、Header、Footer、图标等
   content/blog/   # 文章（Markdown / MDX）
-  layouts/        # 文章页布局
+  layouts/        # BaseLayout 页面壳、BlogPost 文章布局
   pages/          # 路由页面
-  styles/         # 全局样式（Bear 风）
+  styles/         # 全局样式
   consts.ts       # 站点常量
 ```
 

@@ -1,68 +1,56 @@
 ---
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
 
-<!doctype html>
-<html lang="zh-CN">
-	<head>
-		<BaseHead title={`博客 | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main class="wide">
-			<section class="section">
-				<p class="eyebrow">Blog</p>
-				<h1 class="page-title">博客</h1>
-				<p class="lead">踩坑记录、工程实践与折腾笔记。</p>
-			</section>
+<BaseLayout title={`博客 | ${SITE_TITLE}`} description={SITE_DESCRIPTION} mainClass="wide">
+	<section class="section">
+		<p class="eyebrow">Blog</p>
+		<h1 class="page-title">博客</h1>
+		<p class="lead">踩坑记录、工程实践与折腾笔记。</p>
+	</section>
 
-			<section>
-				{
-					posts.length === 0 ? (
-						<p class="empty">还没有文章。</p>
-					) : (
-						<ul class="post-grid">
-							{posts.map((post, index) => (
-								<li class:list={[{ featured: index === 0 }]}>
-									<a href={`/blog/${post.id}/`}>
-										{post.data.heroImage && (
-											<div class="thumb">
-												<Image
-													width={index === 0 ? 960 : 640}
-													height={index === 0 ? 420 : 320}
-													src={post.data.heroImage}
-													alt=""
-												/>
-											</div>
-										)}
-										<div class="body">
-											<p class="date">
-												<FormattedDate date={post.data.pubDate} />
-											</p>
-											<h2 class="title">{post.data.title}</h2>
-											{post.data.description && <p class="desc">{post.data.description}</p>}
-										</div>
-									</a>
-								</li>
-							))}
-						</ul>
-					)
-				}
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
+	<section>
+		{
+			posts.length === 0 ? (
+				<p class="empty">还没有文章。</p>
+			) : (
+				<ul class="post-grid">
+					{posts.map((post, index) => (
+						<li class:list={[{ featured: index === 0 }]}>
+							<a href={`/blog/${post.id}/`}>
+								{post.data.heroImage && (
+									<div class="thumb">
+										<Image
+											width={index === 0 ? 960 : 640}
+											height={index === 0 ? 420 : 320}
+											src={post.data.heroImage}
+											alt=""
+										/>
+									</div>
+								)}
+								<div class="body">
+									<p class="date">
+										<FormattedDate date={post.data.pubDate} />
+									</p>
+									<h2 class="title">{post.data.title}</h2>
+									{post.data.description && <p class="desc">{post.data.description}</p>}
+								</div>
+							</a>
+						</li>
+					))}
+				</ul>
+			)
+		}
+	</section>
+</BaseLayout>
 
 <style>
 	.eyebrow {
