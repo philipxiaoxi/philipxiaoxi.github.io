@@ -1,29 +1,112 @@
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import Layout from '../layouts/BlogPost.astro';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import {
+	ABOUT_INTRO,
+	SITE_DESCRIPTION,
+	SITE_EMAIL,
+	SITE_TAGLINE,
+	SITE_TITLE,
+	TECH_FOCUS,
+} from '../consts';
 ---
 
-<Layout
-	title="关于"
-	description="关于杰西的自习室"
-	pubDate={new Date('2026-07-28')}
-	heroImage={AboutHeroImage}
->
-	<p>
-		你好，我是杰西。这里是「杰西的自习室」——一个记录软件工程技术与日常折腾的个人博客。
-	</p>
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={`关于 | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="section">
+				<p class="eyebrow">About</p>
+				<h1>关于我</h1>
+				<p class="lead">{SITE_DESCRIPTION}</p>
+			</section>
 
-	<p>
-		我会在这里写构建与部署、工程化实践、工具链选择，以及开发过程中真实踩过的坑。目标不是堆概念，而是把「当时怎么想、怎么做、结果如何」说清楚，方便以后的自己和路过的你对照。
-	</p>
+			<section class="section">
+				<h2 class="section-label"><span class="emoji" aria-hidden="true">👋</span> 简介</h2>
+				<div class="card about-card">
+					{ABOUT_INTRO.map((paragraph) => <p>{paragraph}</p>)}
+					<p>
+						这里是「{SITE_TITLE}」：用中文记录软件工程踩坑、工程化实践与 AI 相关折腾。内容尽量短、可复现。
+					</p>
+				</div>
+			</section>
 
-	<p>
-		站点基于 <a href="https://astro.build/">Astro</a> 搭建，部署在 GitHub Pages，保持极简 Bear 风格，尽量少干扰阅读。
-	</p>
+			<section class="section">
+				<h2 class="section-label"><span class="emoji" aria-hidden="true">🔧</span> 技术方向</h2>
+				<div class="table-wrap">
+					<table class="focus-table">
+						<thead>
+							<tr>
+								<th scope="col">领域</th>
+								<th scope="col">内容</th>
+							</tr>
+						</thead>
+						<tbody>
+							{
+								TECH_FOCUS.map((item) => (
+									<tr>
+										<td class="area">
+											<span class="emoji" aria-hidden="true">
+												{item.icon}
+											</span>
+											{item.area}
+										</td>
+										<td>{item.detail}</td>
+									</tr>
+								))
+							}
+						</tbody>
+					</table>
+				</div>
+			</section>
 
-	<p>
-		代码与站点相关仓库见
-		<a href="https://github.com/philipxiaoxi" target="_blank" rel="noopener noreferrer">GitHub @philipxiaoxi</a>。
-		有问题或想交流，欢迎通过 GitHub 联系我。
-	</p>
-</Layout>
+			<section class="section">
+				<h2 class="section-label"><span class="emoji" aria-hidden="true">📌</span> 联系我</h2>
+				<div class="card">
+					<ul class="contact-list">
+						<li>
+							邮箱：
+							<a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a>
+						</li>
+						<li>
+							GitHub：
+							<a href="https://github.com/philipxiaoxi" target="_blank" rel="noopener noreferrer"
+								>philipxiaoxi</a
+							>
+							（欢迎 Star ⭐）
+						</li>
+					</ul>
+				</div>
+				<p class="site-motto">{SITE_TAGLINE}</p>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.eyebrow {
+		display: inline-block;
+		margin: 0 0 0.75rem;
+		padding: 0.25rem 0.7rem;
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		color: var(--accent-dark);
+		background: var(--accent-soft);
+		border-radius: 999px;
+	}
+
+	.about-card p:last-child {
+		margin-bottom: 0;
+	}
+
+	.table-wrap {
+		overflow-x: auto;
+	}
+</style>

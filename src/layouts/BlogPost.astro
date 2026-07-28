@@ -14,56 +14,21 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 <html lang="zh-CN">
 	<head>
 		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
 	</head>
 
 	<body>
 		<Header />
 		<main>
 			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
-				</div>
+				{
+					heroImage && (
+						<div class="hero-image">
+							<Image width={1020} height={510} src={heroImage} alt="" />
+						</div>
+					)
+				}
 				<div class="prose">
-					<div class="title">
+					<header class="title">
 						<div class="date">
 							<FormattedDate date={pubDate} />
 							{
@@ -75,8 +40,9 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 							}
 						</div>
 						<h1>{title}</h1>
+						{description && <p class="summary">{description}</p>}
 						<hr />
-					</div>
+					</header>
 					<slot />
 				</div>
 			</article>
@@ -84,3 +50,104 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.hero-image {
+		width: min(var(--wide-width), calc(100% - 2rem));
+		margin: 0 auto 1.5rem;
+	}
+
+	.hero-image :global(img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: var(--radius);
+		box-shadow: var(--shadow-md);
+		border: 1px solid rgba(var(--line), 0.7);
+	}
+
+	.prose {
+		width: var(--content-width);
+		max-width: calc(100% - 2rem);
+		margin: 0 auto;
+		color: rgb(var(--gray-dark));
+		/* 宽表格可横向滑动 */
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	/* scoped 样式默认不穿透 slot 里的 Markdown 节点，用 :global 补一层 */
+	.prose :global(table) {
+		width: 100%;
+		margin: 1.25em 0 1.75em;
+		border-collapse: separate;
+		border-spacing: 0;
+		font-size: 0.92rem;
+		line-height: 1.55;
+		border: 1px solid rgba(var(--line), 0.9);
+		border-radius: var(--radius-sm);
+		background: var(--paper-elevated);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.prose :global(thead th) {
+		background: rgba(var(--line), 0.4);
+		color: rgb(var(--ink-muted));
+		font-weight: 700;
+		font-size: 0.85rem;
+		text-align: left;
+	}
+
+	.prose :global(th),
+	.prose :global(td) {
+		padding: 0.7rem 0.95rem;
+		border-bottom: 1px solid rgba(var(--line), 0.8);
+		vertical-align: top;
+	}
+
+	.prose :global(tbody tr:last-child th),
+	.prose :global(tbody tr:last-child td) {
+		border-bottom: none;
+	}
+
+	.prose :global(tbody tr:hover td),
+	.prose :global(tbody tr:hover th) {
+		background: rgba(243, 224, 212, 0.28);
+	}
+
+	.title {
+		margin-bottom: 1.5rem;
+		text-align: left;
+	}
+
+	.title h1 {
+		margin: 0 0 0.65rem;
+	}
+
+	.date {
+		margin-bottom: 0.65rem;
+		color: rgb(var(--ink-muted));
+		font-size: 0.92rem;
+	}
+
+	.last-updated-on {
+		margin-top: 0.2rem;
+		font-style: italic;
+	}
+
+	.summary {
+		margin: 0 0 1rem;
+		color: rgb(var(--ink-muted));
+		font-size: 1.05rem;
+		line-height: 1.6;
+	}
+
+	.prose :global(h2),
+	.prose :global(h3) {
+		margin-top: 1.75em;
+	}
+
+	.prose :global(a) {
+		font-weight: 600;
+	}
+</style>

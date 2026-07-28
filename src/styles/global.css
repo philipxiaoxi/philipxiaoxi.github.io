@@ -1,124 +1,458 @@
 /*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
+  杰西的自习室 — 现代编辑室风格
+  在 Bear Blog 阅读体验基础上做排版与层次升级
  */
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
+	/* 墨色纸本 + 琥珀强调（自习室暖光） */
+	--accent: #c45c26;
+	--accent-soft: #f3e0d4;
+	--accent-dark: #8f3f14;
+	--ink: 22, 24, 28;
+	--ink-muted: 90, 96, 108;
+	--paper: #f7f4ef;
+	--paper-elevated: #fffcf8;
+	--line: 220, 214, 204;
+	--black: 22, 24, 28;
+	--gray: 90, 96, 108;
+	--gray-light: 232, 227, 218;
+	--gray-dark: 40, 44, 52;
+	--radius: 14px;
+	--radius-sm: 10px;
+	--shadow-sm: 0 1px 2px rgba(22, 24, 28, 0.04), 0 4px 12px rgba(22, 24, 28, 0.04);
+	--shadow-md: 0 4px 24px rgba(22, 24, 28, 0.06), 0 1px 3px rgba(22, 24, 28, 0.04);
+	--shadow-lg: 0 12px 40px rgba(22, 24, 28, 0.08), 0 2px 8px rgba(22, 24, 28, 0.04);
+	--box-shadow: var(--shadow-md);
+	--content-width: 42rem;
+	--wide-width: 56rem;
+	--header-height: 4rem;
+	--font-display: var(--font-atkinson), 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC',
+		'Microsoft YaHei', sans-serif;
+	--font-body: var(--font-atkinson), 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC',
+		'Microsoft YaHei', sans-serif;
 }
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
 body {
-	font-family: var(--font-atkinson);
+	font-family: var(--font-body);
 	margin: 0;
 	padding: 0;
+	min-height: 100vh;
 	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
+	color: rgb(var(--ink));
+	font-size: 18px;
+	line-height: 1.75;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
+	background-color: var(--paper);
+	background-image:
+		radial-gradient(ellipse 80% 50% at 10% -10%, rgba(196, 92, 38, 0.08), transparent 55%),
+		radial-gradient(ellipse 60% 40% at 95% 5%, rgba(90, 96, 108, 0.06), transparent 50%),
+		linear-gradient(180deg, #faf7f2 0%, var(--paper) 28%, #f3efe8 100%);
+	background-attachment: fixed;
 }
+
+/* 细噪点，增加纸感 */
+body::before {
+	content: '';
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	z-index: 0;
+	opacity: 0.35;
+	background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+body > * {
+	position: relative;
+	z-index: 1;
+}
+
 main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
+	width: var(--content-width);
+	max-width: calc(100% - 2rem);
+	margin: 0 auto;
+	padding: 2.5rem 1rem 4rem;
 }
+
+main.wide {
+	width: var(--wide-width);
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
-	line-height: 1.2;
+	margin: 0 0 0.6rem 0;
+	color: rgb(var(--ink));
+	line-height: 1.25;
+	font-family: var(--font-display);
+	letter-spacing: -0.02em;
+	font-weight: 700;
 }
+
 h1 {
-	font-size: 3.052em;
+	font-size: clamp(2rem, 5vw, 2.75rem);
 }
 h2 {
-	font-size: 2.441em;
+	font-size: clamp(1.45rem, 3vw, 1.75rem);
 }
 h3 {
-	font-size: 1.953em;
+	font-size: 1.25rem;
 }
 h4 {
-	font-size: 1.563em;
+	font-size: 1.1rem;
 }
 h5 {
-	font-size: 1.25em;
+	font-size: 1rem;
 }
+
 strong,
 b {
 	font-weight: 700;
 }
+
 a {
-	color: var(--accent);
+	color: var(--accent-dark);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.18em;
+	transition: color 0.15s ease;
 }
+
 a:hover {
 	color: var(--accent);
 }
+
 p {
-	margin-bottom: 1em;
+	margin: 0 0 1em;
 }
+
 .prose p {
-	margin-bottom: 2em;
+	margin-bottom: 1.35em;
 }
-textarea {
-	width: 100%;
-	font-size: 16px;
-}
+
+textarea,
 input {
 	font-size: 16px;
 }
+
+/* 裸 table 兜底；正文 Markdown 表格见下方 .prose table */
 table {
 	width: 100%;
+	border-collapse: collapse;
 }
+
+/* Markdown / 文章正文表格 */
+.prose table {
+	width: 100%;
+	margin: 1.25em 0 1.75em;
+	border-collapse: separate;
+	border-spacing: 0;
+	font-size: 0.92rem;
+	line-height: 1.55;
+	overflow: hidden;
+	border: 1px solid rgba(var(--line), 0.9);
+	border-radius: var(--radius-sm);
+	background: var(--paper-elevated);
+	box-shadow: var(--shadow-sm);
+	display: table;
+}
+
+.prose thead th {
+	background: rgba(var(--line), 0.4);
+	color: rgb(var(--ink-muted));
+	font-weight: 700;
+	font-size: 0.85rem;
+	letter-spacing: 0.02em;
+	text-align: left;
+}
+
+.prose th,
+.prose td {
+	padding: 0.7rem 0.95rem;
+	border-bottom: 1px solid rgba(var(--line), 0.8);
+	vertical-align: top;
+}
+
+.prose tbody tr:last-child th,
+.prose tbody tr:last-child td {
+	border-bottom: none;
+}
+
+.prose tbody tr:hover td,
+.prose tbody tr:hover th {
+	background: rgba(243, 224, 212, 0.28);
+}
+
+/* 宽表可横向滚动，避免撑破版心 */
+.prose {
+	overflow-wrap: anywhere;
+}
+
+.prose table {
+	/* 让父级可出现横向滚动条时表格仍可读 */
+	max-width: 100%;
+}
+
 img {
 	max-width: 100%;
 	height: auto;
-	border-radius: 8px;
+	border-radius: var(--radius-sm);
 }
+
 code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
+	padding: 0.15em 0.4em;
+	font-size: 0.9em;
+	background: rgba(var(--line), 0.45);
+	border-radius: 6px;
 }
+
 pre {
-	padding: 1.5em;
-	border-radius: 8px;
+	padding: 1.25em 1.35em;
+	border-radius: var(--radius-sm);
+	overflow-x: auto;
+	box-shadow: var(--shadow-sm);
 }
+
 pre > code {
 	all: unset;
+	font-size: 0.9em;
 }
+
 blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0 0 0 20px;
-	margin: 0;
-	font-size: 1.333em;
+	border-left: 3px solid var(--accent);
+	padding: 0.15em 0 0.15em 1.1em;
+	margin: 0 0 1.25em;
+	color: rgb(var(--ink-muted));
+	font-size: 1.05em;
 }
+
 hr {
 	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+	border-top: 1px solid rgba(var(--line), 0.9);
+	margin: 2em 0;
 }
+
+/* 通用区块 */
+.section {
+	margin-bottom: 2.75rem;
+}
+
+.section-label {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin: 0 0 1rem;
+	font-size: 1.35rem;
+}
+
+.section-label .emoji {
+	font-size: 1.15em;
+	line-height: 1;
+}
+
+.lead {
+	color: rgb(var(--ink-muted));
+	font-size: 1.05em;
+	border-left: 3px solid var(--accent);
+	padding-left: 1rem;
+	margin: 0 0 2rem;
+}
+
+/* 卡片 */
+.card {
+	background: var(--paper-elevated);
+	border: 1px solid rgba(var(--line), 0.85);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow-sm);
+	padding: 1.35rem 1.4rem;
+}
+
+.card-list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.85rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.post-card {
+	display: block;
+	padding: 1.15rem 1.25rem;
+	background: var(--paper-elevated);
+	border: 1px solid rgba(var(--line), 0.85);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow-sm);
+	text-decoration: none;
+	color: inherit;
+	transition:
+		transform 0.18s ease,
+		box-shadow 0.18s ease,
+		border-color 0.18s ease;
+}
+
+.post-card:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--shadow-md);
+	border-color: rgba(196, 92, 38, 0.35);
+	color: inherit;
+}
+
+.post-card .post-title {
+	margin: 0 0 0.35rem;
+	font-size: 1.15rem;
+	color: rgb(var(--ink));
+}
+
+.post-card:hover .post-title {
+	color: var(--accent-dark);
+}
+
+.post-card .post-meta {
+	margin: 0;
+	font-size: 0.88rem;
+	color: rgb(var(--ink-muted));
+}
+
+.post-card .post-desc {
+	margin: 0.45rem 0 0;
+	font-size: 0.95rem;
+	color: rgb(var(--gray-dark));
+	line-height: 1.55;
+}
+
+/* 技术方向表 */
+.focus-table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	overflow: hidden;
+	border-radius: var(--radius);
+	border: 1px solid rgba(var(--line), 0.9);
+	background: var(--paper-elevated);
+	box-shadow: var(--shadow-sm);
+	font-size: 0.95rem;
+}
+
+.focus-table th,
+.focus-table td {
+	padding: 0.9rem 1.1rem;
+	text-align: left;
+	vertical-align: top;
+	border-bottom: 1px solid rgba(var(--line), 0.75);
+}
+
+.focus-table th {
+	background: rgba(var(--line), 0.35);
+	font-weight: 700;
+	font-size: 0.85rem;
+	letter-spacing: 0.04em;
+	color: rgb(var(--ink-muted));
+}
+
+.focus-table tr:last-child td {
+	border-bottom: none;
+}
+
+.focus-table .area {
+	white-space: nowrap;
+	font-weight: 600;
+	width: 38%;
+}
+
+.focus-table .area .emoji {
+	margin-right: 0.35rem;
+}
+
+.focus-table tbody tr {
+	transition: background 0.15s ease;
+}
+
+.focus-table tbody tr:hover {
+	background: rgba(243, 224, 212, 0.35);
+}
+
+/* 联系列表 */
+.contact-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.contact-list li {
+	margin: 0.45rem 0;
+	padding-left: 0.15rem;
+}
+
+.contact-list a {
+	font-weight: 600;
+}
+
+/* 页脚标语 */
+.site-motto {
+	margin: 1.5rem 0 0;
+	padding: 0.85rem 1rem;
+	border-left: 3px solid var(--accent);
+	color: rgb(var(--ink-muted));
+	font-size: 0.95rem;
+	background: rgba(255, 252, 248, 0.6);
+	border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* 链接按钮 */
+.link-more {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	margin-top: 1.15rem;
+	font-weight: 600;
+	text-decoration: none;
+	color: var(--accent-dark);
+}
+
+.link-more:hover {
+	color: var(--accent);
+}
+
+.link-more::after {
+	content: '→';
+	transition: transform 0.15s ease;
+}
+
+.link-more:hover::after {
+	transform: translateX(3px);
+}
+
 @media (max-width: 720px) {
 	body {
-		font-size: 18px;
+		font-size: 17px;
 	}
+
 	main {
-		padding: 1em;
+		padding: 1.5rem 0.85rem 3rem;
+	}
+
+	.focus-table .area {
+		white-space: normal;
+		width: auto;
+	}
+
+	.focus-table th,
+	.focus-table td {
+		padding: 0.75rem 0.8rem;
+		font-size: 0.9rem;
 	}
 }
 
@@ -130,12 +464,8 @@ hr {
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
 	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
 	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
 	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }

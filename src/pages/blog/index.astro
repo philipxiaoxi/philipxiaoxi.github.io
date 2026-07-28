@@ -16,103 +16,189 @@ const posts = (await getCollection('blog')).sort(
 <html lang="zh-CN">
 	<head>
 		<BaseHead title={`博客 | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			.page-title {
-				margin-bottom: 1.5em;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
 	</head>
 	<body>
 		<Header />
-		<main>
-			<section>
+		<main class="wide">
+			<section class="section">
+				<p class="eyebrow">Blog</p>
 				<h1 class="page-title">博客</h1>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
+				<p class="lead">踩坑记录、工程实践与折腾笔记。</p>
+			</section>
+
+			<section>
+				{
+					posts.length === 0 ? (
+						<p class="empty">还没有文章。</p>
+					) : (
+						<ul class="post-grid">
+							{posts.map((post, index) => (
+								<li class:list={[{ featured: index === 0 }]}>
+									<a href={`/blog/${post.id}/`}>
+										{post.data.heroImage && (
+											<div class="thumb">
+												<Image
+													width={index === 0 ? 960 : 640}
+													height={index === 0 ? 420 : 320}
+													src={post.data.heroImage}
+													alt=""
+												/>
+											</div>
+										)}
+										<div class="body">
+											<p class="date">
+												<FormattedDate date={post.data.pubDate} />
+											</p>
+											<h2 class="title">{post.data.title}</h2>
+											{post.data.description && <p class="desc">{post.data.description}</p>}
+										</div>
+									</a>
+								</li>
+							))}
+						</ul>
+					)
+				}
 			</section>
 		</main>
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.eyebrow {
+		display: inline-block;
+		margin: 0 0 0.75rem;
+		padding: 0.25rem 0.7rem;
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		color: var(--accent-dark);
+		background: var(--accent-soft);
+		border-radius: 999px;
+	}
+
+	.page-title {
+		margin-bottom: 0.65rem;
+	}
+
+	.empty {
+		color: rgb(var(--ink-muted));
+	}
+
+	.post-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.25rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.post-grid li {
+		min-width: 0;
+	}
+
+	.post-grid li.featured {
+		grid-column: 1 / -1;
+	}
+
+	.post-grid a {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		overflow: hidden;
+		background: var(--paper-elevated);
+		border: 1px solid rgba(var(--line), 0.85);
+		border-radius: var(--radius);
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		color: inherit;
+		transition:
+			transform 0.18s ease,
+			box-shadow 0.18s ease,
+			border-color 0.18s ease;
+	}
+
+	.post-grid a:hover {
+		transform: translateY(-3px);
+		box-shadow: var(--shadow-md);
+		border-color: rgba(196, 92, 38, 0.35);
+		color: inherit;
+	}
+
+	.thumb {
+		overflow: hidden;
+		background: rgba(var(--line), 0.35);
+	}
+
+	.thumb :global(img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 16 / 9;
+		object-fit: cover;
+		border-radius: 0;
+		transition: transform 0.35s ease;
+	}
+
+	.post-grid a:hover .thumb :global(img) {
+		transform: scale(1.03);
+	}
+
+	.featured a {
+		display: grid;
+		grid-template-columns: 1.2fr 1fr;
+		align-items: stretch;
+	}
+
+	.featured .thumb :global(img) {
+		aspect-ratio: 16 / 10;
+		height: 100%;
+		min-height: 220px;
+	}
+
+	.body {
+		padding: 1.15rem 1.25rem 1.35rem;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.date {
+		margin: 0 0 0.4rem;
+		font-size: 0.88rem;
+		color: rgb(var(--ink-muted));
+	}
+
+	.title {
+		margin: 0;
+		font-size: 1.2rem;
+		line-height: 1.35;
+		color: rgb(var(--ink));
+	}
+
+	.featured .title {
+		font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+	}
+
+	.post-grid a:hover .title {
+		color: var(--accent-dark);
+	}
+
+	.desc {
+		margin: 0.55rem 0 0;
+		font-size: 0.95rem;
+		color: rgb(var(--gray-dark));
+		line-height: 1.55;
+	}
+
+	@media (max-width: 800px) {
+		.post-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.featured a {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
