@@ -1,6 +1,6 @@
-# 杰西的自习室
+# 杰西的练习室
 
-个人技术博客：一个全栈开发者的技术自习与实战分享。
+个人技术博客：一个全栈开发者的技术练习与实战分享。
 
 - 站点：https://philipxiaoxi.github.io
 - 框架：[Astro](https://astro.build/) Blog 模版（极简 Bear 风）

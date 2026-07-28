@@ -1,6 +1,6 @@
 /** 站点级常量：标题、导航、社交与首页简介 */
 
-export const SITE_TITLE = '杰西的自习室';
+export const SITE_TITLE = '杰西的练习室';
 export const SITE_DESCRIPTION = '杰西的技术笔记：前端、工程化与一点 AI 实践';
 export const SITE_AUTHOR = '杰西';
 export const SITE_TAGLINE = '写清楚一点，少踩一点坑。';
@@ -11,7 +11,7 @@ export const SITE_GITHUB_HANDLE = 'philipxiaoxi';
 /** 导航项 */
 export const NAV_LINKS = [
 	{ href: '/', label: '首页' },
-	{ href: '/blog', label: '博客' },
+	{ href: '/blog', label: '练习室' },
 ] as const;
 
 export type SocialIconName = 'github' | 'email';
