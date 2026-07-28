@@ -1,192 +1,183 @@
 ---
-import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
-import FormattedDate from '../../components/FormattedDate.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+
+function formatListDate(date: Date) {
+	return date.toLocaleDateString('en-US', {
+		year: 'numeric',
+		month: 'short',
+		day: 'numeric',
+	});
+}
 ---
 
 <BaseLayout title={`博客 | ${SITE_TITLE}`} description={SITE_DESCRIPTION} mainClass="wide">
-	<section class="section">
-		<p class="eyebrow">Blog</p>
+	<header class="page-hero">
+		<p class="kicker">Blog</p>
 		<h1 class="page-title">博客</h1>
-		<p class="lead">踩坑记录、工程实践与折腾笔记。</p>
-	</section>
+		<p class="subtitle">踩坑记录、工程实践与折腾笔记。</p>
+	</header>
 
-	<section>
-		{
-			posts.length === 0 ? (
-				<p class="empty">还没有文章。</p>
-			) : (
-				<ul class="post-grid">
-					{posts.map((post, index) => (
-						<li class:list={[{ featured: index === 0 }]}>
-							<a href={`/blog/${post.id}/`}>
-								{post.data.heroImage && (
-									<div class="thumb">
-										<Image
-											width={index === 0 ? 960 : 640}
-											height={index === 0 ? 420 : 320}
-											src={post.data.heroImage}
-											alt=""
-										/>
-									</div>
-								)}
-								<div class="body">
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-									<h2 class="title">{post.data.title}</h2>
-									{post.data.description && <p class="desc">{post.data.description}</p>}
-								</div>
-							</a>
-						</li>
-					))}
-				</ul>
-			)
-		}
-	</section>
+	{
+		posts.length === 0 ? (
+			<p class="empty">还没有文章。</p>
+		) : (
+			<ul class="post-list">
+				{posts.map((post) => (
+					<li>
+						<a class="post-row" href={`/blog/${post.id}/`}>
+							<time class="date" datetime={post.data.pubDate.toISOString()}>
+								{formatListDate(post.data.pubDate)}
+							</time>
+							<div class="body">
+								<h2 class="title">{post.data.title}</h2>
+								{post.data.description && <p class="desc">{post.data.description}</p>}
+							</div>
+						</a>
+					</li>
+				))}
+			</ul>
+		)
+	}
 </BaseLayout>
 
 <style>
-	.eyebrow {
-		display: inline-block;
-		margin: 0 0 0.75rem;
-		padding: 0.25rem 0.7rem;
-		font-size: 0.8rem;
+	/* Apple Newsroom 式：大留白、细线分割、日期栏 + 标题栏 */
+	.page-hero {
+		padding: 1.25rem 0 2.75rem;
+		margin-bottom: 0.25rem;
+	}
+
+	.kicker {
+		margin: 0 0 0.65rem;
+		font-size: 0.78rem;
 		font-weight: 600;
-		letter-spacing: 0.04em;
-		color: var(--accent-dark);
-		background: var(--accent-soft);
-		border-radius: 999px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: rgb(var(--ink-muted));
 	}
 
 	.page-title {
-		margin-bottom: 0.65rem;
+		margin: 0 0 0.75rem;
+		font-size: clamp(2.5rem, 5.5vw, 3.5rem);
+		font-weight: 700;
+		letter-spacing: -0.035em;
+		line-height: 1.08;
+	}
+
+	.subtitle {
+		margin: 0;
+		max-width: 28rem;
+		font-size: 1.125rem;
+		line-height: 1.45;
+		letter-spacing: -0.01em;
+		color: rgb(var(--ink-muted));
+		font-weight: 400;
 	}
 
 	.empty {
+		margin: 2rem 0 0;
 		color: rgb(var(--ink-muted));
 	}
 
-	.post-grid {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 1.25rem;
+	.post-list {
 		list-style: none;
 		margin: 0;
 		padding: 0;
+		border-top: 1px solid rgba(var(--line), 0.95);
 	}
 
-	.post-grid li {
-		min-width: 0;
+	.post-list li {
+		border-bottom: 1px solid rgba(var(--line), 0.95);
 	}
 
-	.post-grid li.featured {
-		grid-column: 1 / -1;
-	}
-
-	.post-grid a {
-		display: flex;
-		flex-direction: column;
-		height: 100%;
-		overflow: hidden;
-		background: var(--paper-elevated);
-		border: 1px solid rgba(var(--line), 0.85);
-		border-radius: var(--radius);
-		box-shadow: var(--shadow-sm);
+	.post-row {
+		display: grid;
+		grid-template-columns: 7.5rem minmax(0, 1fr);
+		align-items: start;
+		gap: 1.25rem 1.75rem;
+		padding: 1.85rem 0.15rem;
 		text-decoration: none;
 		color: inherit;
-		transition:
-			transform 0.18s ease,
-			box-shadow 0.18s ease,
-			border-color 0.18s ease;
+		transition: opacity 0.2s ease;
 	}
 
-	.post-grid a:hover {
-		transform: translateY(-3px);
-		box-shadow: var(--shadow-md);
-		border-color: rgba(196, 92, 38, 0.35);
+	.post-row:hover {
 		color: inherit;
+		opacity: 0.72;
 	}
 
-	.thumb {
-		overflow: hidden;
-		background: rgba(var(--line), 0.35);
+	.post-row:hover .title {
+		color: rgb(var(--ink));
 	}
 
-	.thumb :global(img) {
-		display: block;
-		width: 100%;
-		height: auto;
-		aspect-ratio: 16 / 9;
-		object-fit: cover;
-		border-radius: 0;
-		transition: transform 0.35s ease;
-	}
-
-	.post-grid a:hover .thumb :global(img) {
-		transform: scale(1.03);
-	}
-
-	.featured a {
-		display: grid;
-		grid-template-columns: 1.2fr 1fr;
-		align-items: stretch;
-	}
-
-	.featured .thumb :global(img) {
-		aspect-ratio: 16 / 10;
-		height: 100%;
-		min-height: 220px;
-	}
-
-	.body {
-		padding: 1.15rem 1.25rem 1.35rem;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
+	.post-row:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 4px;
+		border-radius: 6px;
+		opacity: 1;
 	}
 
 	.date {
-		margin: 0 0 0.4rem;
-		font-size: 0.88rem;
+		margin: 0.35rem 0 0;
+		font-size: 0.9rem;
+		line-height: 1.35;
+		letter-spacing: -0.01em;
 		color: rgb(var(--ink-muted));
+		font-variant-numeric: tabular-nums;
+		font-weight: 400;
+	}
+
+	.body {
+		min-width: 0;
 	}
 
 	.title {
 		margin: 0;
-		font-size: 1.2rem;
-		line-height: 1.35;
+		font-size: clamp(1.2rem, 2.2vw, 1.45rem);
+		font-weight: 600;
+		line-height: 1.28;
+		letter-spacing: -0.025em;
 		color: rgb(var(--ink));
-	}
-
-	.featured .title {
-		font-size: clamp(1.35rem, 2.5vw, 1.75rem);
-	}
-
-	.post-grid a:hover .title {
-		color: var(--accent-dark);
 	}
 
 	.desc {
 		margin: 0.55rem 0 0;
-		font-size: 0.95rem;
-		color: rgb(var(--gray-dark));
-		line-height: 1.55;
+		max-width: 38rem;
+		font-size: 1rem;
+		line-height: 1.5;
+		letter-spacing: -0.01em;
+		color: rgb(var(--ink-muted));
 	}
 
-	@media (max-width: 800px) {
-		.post-grid {
-			grid-template-columns: 1fr;
+	@media (max-width: 720px) {
+		.page-hero {
+			padding: 0.5rem 0 1.75rem;
 		}
 
-		.featured a {
+		.post-row {
 			grid-template-columns: 1fr;
+			gap: 0.35rem;
+			padding: 1.4rem 0;
+		}
+
+		.date {
+			margin: 0;
+			font-size: 0.82rem;
+		}
+
+		.title {
+			font-size: 1.15rem;
+		}
+
+		.desc {
+			font-size: 0.95rem;
+			margin-top: 0.4rem;
 		}
 	}
 </style>
