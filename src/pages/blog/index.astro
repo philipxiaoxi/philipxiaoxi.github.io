@@ -13,12 +13,15 @@ const posts = (await getCollection('blog')).sort(
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title={`博客 | ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
 		<style>
 			main {
 				width: 960px;
+			}
+			.page-title {
+				margin-bottom: 1.5em;
 			}
 			ul {
 				display: flex;
@@ -90,6 +93,7 @@ const posts = (await getCollection('blog')).sort(
 		<Header />
 		<main>
 			<section>
+				<h1 class="page-title">博客</h1>
 				<ul>
 					{
 						posts.map((post) => (
