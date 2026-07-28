@@ -5,12 +5,12 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import {
-	ABOUT_INTRO,
+	PROFILE,
 	SITE_DESCRIPTION,
 	SITE_EMAIL,
-	SITE_TAGLINE,
+	SITE_GITHUB,
+	SITE_GITHUB_HANDLE,
 	SITE_TITLE,
-	TECH_FOCUS,
 } from '../consts';
 
 const recentPosts = (await getCollection('blog'))
@@ -25,91 +25,64 @@ const recentPosts = (await getCollection('blog'))
 	</head>
 	<body>
 		<Header />
-		<main>
-			<section class="hero section">
-				<p class="eyebrow">个人技术博客</p>
-				<h1>{SITE_TITLE}</h1>
-				<p class="lead">{SITE_DESCRIPTION}</p>
+		<main class="home">
+			<section class="intro">
+				<p class="name-en">{SITE_TITLE}</p>
+				<h1 class="name">{PROFILE.name}</h1>
+				<p class="headline">{PROFILE.headline}</p>
 			</section>
 
-			<section class="section" id="about">
-				<h2 class="section-label"><span class="emoji" aria-hidden="true">👋</span> 关于我</h2>
-				<div class="card about-card">
-					{ABOUT_INTRO.map((paragraph) => <p>{paragraph}</p>)}
+			<section class="block" id="about">
+				<header class="block-head">
+					<span class="num" aria-hidden="true">01</span>
+					<h2>关于</h2>
+				</header>
+				<div class="bio">
+					{PROFILE.paragraphs.map((text) => <p>{text}</p>)}
 				</div>
+				<ul class="focus" aria-label="关注方向">
+					{PROFILE.focus.map((item) => <li>{item}</li>)}
+				</ul>
 			</section>
 
-			<section class="section" id="focus">
-				<h2 class="section-label"><span class="emoji" aria-hidden="true">🔧</span> 技术方向</h2>
-				<div class="table-wrap">
-					<table class="focus-table">
-						<thead>
-							<tr>
-								<th scope="col">领域</th>
-								<th scope="col">内容</th>
-							</tr>
-						</thead>
-						<tbody>
-							{
-								TECH_FOCUS.map((item) => (
-									<tr>
-										<td class="area">
-											<span class="emoji" aria-hidden="true">
-												{item.icon}
-											</span>
-											{item.area}
-										</td>
-										<td>{item.detail}</td>
-									</tr>
-								))
-							}
-						</tbody>
-					</table>
-				</div>
+			<section class="block" id="contact">
+				<header class="block-head">
+					<span class="num" aria-hidden="true">02</span>
+					<h2>联系方式</h2>
+				</header>
+				<p class="contact-line">
+					<a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a>
+					<span class="sep" aria-hidden="true">·</span>
+					<a href={SITE_GITHUB} target="_blank" rel="noopener noreferrer">GitHub</a>
+					<span class="sep" aria-hidden="true">·</span>
+					<a href={SITE_GITHUB} target="_blank" rel="noopener noreferrer">{SITE_GITHUB_HANDLE}</a>
+				</p>
 			</section>
 
-			<section class="section" id="contact">
-				<h2 class="section-label"><span class="emoji" aria-hidden="true">📌</span> 联系我</h2>
-				<div class="card">
-					<ul class="contact-list">
-						<li>
-							邮箱：
-							<a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a>
-						</li>
-						<li>
-							GitHub：
-							<a href="https://github.com/philipxiaoxi" target="_blank" rel="noopener noreferrer"
-								>philipxiaoxi</a
-							>
-							（欢迎 Star ⭐）
-						</li>
-					</ul>
-				</div>
-				<p class="site-motto">{SITE_TAGLINE}</p>
-			</section>
-
-			<section class="section" id="posts">
-				<h2 class="section-label"><span class="emoji" aria-hidden="true">✍️</span> 最近文章</h2>
+			<section class="block" id="posts">
+				<header class="block-head">
+					<span class="num" aria-hidden="true">03</span>
+					<h2>近期文章</h2>
+					<a class="all" href="/blog">全部</a>
+				</header>
 				{
 					recentPosts.length === 0 ? (
-						<p class="empty">还没有文章，稍后再来看看。</p>
+						<p class="empty">还没有文章。</p>
 					) : (
-						<ul class="card-list">
+						<ul class="post-list">
 							{recentPosts.map((post) => (
 								<li>
-									<a class="post-card" href={`/blog/${post.id}/`}>
-										<h3 class="post-title">{post.data.title}</h3>
-										<p class="post-meta">
+									<a href={`/blog/${post.id}/`}>
+										<span class="post-title">{post.data.title}</span>
+										<span class="post-date">
 											<FormattedDate date={post.data.pubDate} />
-										</p>
-										{post.data.description && <p class="post-desc">{post.data.description}</p>}
+										</span>
 									</a>
 								</li>
 							))}
 						</ul>
 					)
 				}
-				<a class="link-more" href="/blog">查看全部文章</a>
 			</section>
 		</main>
 		<Footer />
@@ -117,32 +90,194 @@ const recentPosts = (await getCollection('blog'))
 </html>
 
 <style>
-	.hero h1 {
-		margin-bottom: 0.75rem;
+	.home {
+		padding-top: 3.5rem;
+		padding-bottom: 5rem;
 	}
 
-	.eyebrow {
-		display: inline-block;
+	.intro {
+		margin-bottom: 3.5rem;
+	}
+
+	.name-en {
+		margin: 0 0 0.85rem;
+		font-size: 0.82rem;
+		letter-spacing: 0.14em;
+		color: rgb(var(--ink-muted));
+		font-weight: 500;
+	}
+
+	.name {
 		margin: 0 0 0.75rem;
-		padding: 0.25rem 0.7rem;
-		font-size: 0.8rem;
-		font-weight: 600;
-		letter-spacing: 0.04em;
-		color: var(--accent-dark);
-		background: var(--accent-soft);
-		border-radius: 999px;
+		font-size: clamp(2.4rem, 6vw, 3.25rem);
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		line-height: 1.15;
 	}
 
-	.about-card p:last-child {
+	.headline {
+		margin: 0;
+		font-size: 1.15rem;
+		color: rgb(var(--ink-muted));
+		font-weight: 400;
+		letter-spacing: 0.02em;
+	}
+
+	.block {
+		margin-bottom: 3.25rem;
+		padding-top: 0.25rem;
+	}
+
+	.block-head {
+		display: flex;
+		align-items: baseline;
+		gap: 0.85rem;
+		margin-bottom: 1.35rem;
+		padding-bottom: 0.75rem;
+		border-bottom: 1px solid rgba(var(--line), 0.9);
+	}
+
+	.block-head .num {
+		font-size: 0.82rem;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		letter-spacing: 0.08em;
+		color: rgb(var(--ink-muted));
+		opacity: 0.75;
+	}
+
+	.block-head h2 {
+		margin: 0;
+		flex: 1;
+		font-size: 0.95rem;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		color: rgb(var(--ink-muted));
+	}
+
+	.block-head .all {
+		font-size: 0.9rem;
+		color: rgb(var(--ink-muted));
+		text-decoration: none;
+	}
+
+	.block-head .all:hover {
+		color: var(--accent-dark);
+	}
+
+	.bio {
+		max-width: 36rem;
+	}
+
+	.bio p {
+		margin: 0 0 1.1rem;
+		color: rgb(var(--gray-dark));
+		font-size: 1.02rem;
+		line-height: 1.85;
+	}
+
+	.bio p:last-child {
 		margin-bottom: 0;
 	}
 
-	.table-wrap {
-		overflow-x: auto;
-		-webkit-overflow-scrolling: touch;
+	.focus {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 0.65rem;
+		list-style: none;
+		margin: 1.75rem 0 0;
+		padding: 0;
+	}
+
+	.focus li {
+		padding: 0.28rem 0.75rem;
+		font-size: 0.82rem;
+		letter-spacing: 0.02em;
+		color: rgb(var(--ink-muted));
+		border: 1px solid rgba(var(--line), 0.95);
+		border-radius: 999px;
+		background: transparent;
+	}
+
+	.contact-line {
+		margin: 0;
+		font-size: 1.02rem;
+		color: rgb(var(--ink-muted));
+		letter-spacing: 0.01em;
+		line-height: 1.8;
+	}
+
+	.contact-line a {
+		color: rgb(var(--ink));
+		text-decoration: none;
+		font-weight: 500;
+		border-bottom: 1px solid transparent;
+		transition:
+			color 0.15s ease,
+			border-color 0.15s ease;
+	}
+
+	.contact-line a:hover {
+		color: var(--accent-dark);
+		border-bottom-color: rgba(196, 92, 38, 0.4);
+	}
+
+	.sep {
+		margin: 0 0.5rem;
+		opacity: 0.45;
+	}
+
+	.post-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.post-list li {
+		border-bottom: 1px solid rgba(var(--line), 0.65);
+	}
+
+	.post-list a {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1.5rem;
+		padding: 1.05rem 0;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.post-list a:hover .post-title {
+		color: var(--accent-dark);
+	}
+
+	.post-title {
+		font-size: 1.05rem;
+		font-weight: 600;
+		line-height: 1.45;
+		transition: color 0.15s ease;
+	}
+
+	.post-date {
+		flex-shrink: 0;
+		font-size: 0.88rem;
+		color: rgb(var(--ink-muted));
+		font-variant-numeric: tabular-nums;
 	}
 
 	.empty {
 		color: rgb(var(--ink-muted));
+		margin: 0;
+	}
+
+	@media (max-width: 640px) {
+		.home {
+			padding-top: 2.25rem;
+		}
+
+		.post-list a {
+			flex-direction: column;
+			gap: 0.35rem;
+		}
 	}
 </style>

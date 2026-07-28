@@ -2,63 +2,45 @@
 // You can import this data from anywhere in your site by using the `import` keyword.
 
 export const SITE_TITLE = '杰西的自习室';
-export const SITE_DESCRIPTION = '一个全栈开发者的技术自习与实战分享';
+export const SITE_DESCRIPTION = '杰西的技术笔记：前端、工程化与一点 AI 实践';
 export const SITE_AUTHOR = '杰西';
-export const SITE_TAGLINE = '持续更新中 — 每一次踩坑，都是一次成长。';
+export const SITE_TAGLINE = '写清楚一点，少踩一点坑。';
 export const SITE_EMAIL = 'xswork@qq.com';
+export const SITE_GITHUB = 'https://github.com/philipxiaoxi';
+export const SITE_GITHUB_HANDLE = 'philipxiaoxi';
 
 /** 导航项 */
 export const NAV_LINKS = [
 	{ href: '/', label: '首页' },
 	{ href: '/blog', label: '博客' },
-	{ href: '/about', label: '关于' },
 ] as const;
 
 /** 社交链接 */
 export const SOCIAL_LINKS = [
 	{
-		href: 'https://github.com/philipxiaoxi',
+		href: SITE_GITHUB,
 		label: 'GitHub',
 		icon: 'github' as const,
 	},
 	{
-		href: 'mailto:xswork@qq.com',
+		href: `mailto:${SITE_EMAIL}`,
 		label: '邮箱',
 		icon: 'email' as const,
 	},
 ] as const;
 
-/** 首页「关于我」 */
-export const ABOUT_INTRO = [
-	'我是杰西，一名持续折腾的全栈开发者。',
-	'从前端起步，踩过无数坑后转型全栈，专注于 AI Agent 开发与前端工程化实践。',
-] as const;
-
-/** 技术方向 */
-export const TECH_FOCUS = [
-	{
-		area: '全栈开发',
-		icon: '📚',
-		detail: '前端 → 后端思维转型，跨栈实战经验',
-	},
-	{
-		area: '前端工程化',
-		icon: '⚙️',
-		detail: '性能优化、持久化缓存、构建体系',
-	},
-	{
-		area: 'AI Agent 开发',
-		icon: '🤖',
-		detail: '从零打造 AI CLI、Agent 工作流编排',
-	},
-	{
-		area: 'AI 实践',
-		icon: '🧠',
-		detail: '用 AI 重构研发流程、提示词工程到 Skill 沉淀',
-	},
-	{
-		area: '安全分析',
-		icon: '🔒',
-		detail: '前端反爬机制、Web 安全研究',
-	},
-] as const;
+/**
+ * 首页简介：委婉、克制，不写求职话术。
+ */
+export const PROFILE = {
+	name: '杰西',
+	role: '前端工程师',
+	location: '广州',
+	headline: '做前端，也写一点全栈与 AI。',
+	paragraphs: [
+		'我是杰西。从 Vue 与工程化一路做下来，习惯把复杂业务收成可维护的结构，也愿意在性能与交付质量上多花一点心思。',
+		'近几年除了业务系统，也在做 AI 辅助研发与 Agent 相关的实践——更在意工具能不能嵌进真实流程，而不是只停留在演示。',
+		'这里记录一些可复现的笔记：踩坑、取舍、以及还在学的事。',
+	],
+	focus: ['Vue / TypeScript', '前端工程化', '性能与体验', 'AI 工作流', '全栈交付'],
+} as const;
