@@ -217,6 +217,18 @@ img {
 	border-radius: var(--radius-sm);
 }
 
+.prose video {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	margin: 1.25em 0 0.5em;
+	border-radius: var(--radius);
+	box-shadow: var(--shadow-md);
+	border: 1px solid rgba(var(--line), 0.7);
+	background: #000;
+}
+
 code {
 	padding: 0.15em 0.4em;
 	font-size: 0.9em;
