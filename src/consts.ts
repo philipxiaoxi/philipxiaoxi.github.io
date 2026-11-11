@@ -5,6 +5,10 @@ export const SITE_DESCRIPTION = '杰西的技术笔记：前端、工程化与�
 export const SITE_AUTHOR = '杰西';
 export const SITE_TAGLINE = '写清楚一点，少踩一点坑。';
 export const SITE_EMAIL = 'xswork@qq.com';
+
+/** ICP 备案号：按工信部要求悬挂在网站底部并链接至备案管理系统 */
+export const ICP_LICENSE = '粤ICP备2026175490号';
+export const ICP_LINK = 'https://beian.miit.gov.cn/';
 export const SITE_GITHUB = 'https://github.com/philipxiaoxi';
 export const SITE_GITHUB_HANDLE = 'philipxiaoxi';
 

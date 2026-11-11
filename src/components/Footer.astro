@@ -1,5 +1,5 @@
 ---
-import { SITE_AUTHOR, SITE_TAGLINE, SOCIAL_LINKS } from '../consts';
+import { ICP_LICENSE, ICP_LINK, SITE_AUTHOR, SITE_TAGLINE, SOCIAL_LINKS } from '../consts';
 
 const year = new Date().getFullYear();
 ---
@@ -24,6 +24,9 @@ const year = new Date().getFullYear();
 				}
 			</div>
 		</div>
+		<p class="record">
+			<a href={ICP_LINK} target="_blank" rel="noopener noreferrer nofollow">{ICP_LICENSE}</a>
+		</p>
 	</div>
 </footer>
 <style>
@@ -77,5 +80,21 @@ const year = new Date().getFullYear();
 
 	.social-links a:hover {
 		color: var(--accent-dark);
+	}
+
+	.record {
+		margin: 0.9rem 0 0;
+		color: rgb(var(--ink-muted));
+		font-size: 0.82rem;
+	}
+
+	.record a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.record a:hover {
+		color: var(--accent-dark);
+		text-decoration: underline;
 	}
 </style>
